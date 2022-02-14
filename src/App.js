@@ -4,7 +4,7 @@ const App = () => {
 
   const collect = async () => {
     try {
-      const response = await fetch("https://api.adviceslip.com/advic")
+      const response = await fetch("https://api.adviceslip.com/advice")
       console.log(response) 
       if(response.status !== 200){
         throw new Error("oops")
