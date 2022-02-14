@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 const App = () => {
   const [advice, setAdvice] = useState("")
-
+  const [error, setError] = useState({
+    error: false,
+    message: ""
+  })
   const collect = async () => {
     try {
       const response = await fetch("https://api.adviceslip.com/advice")
@@ -12,9 +15,17 @@ const App = () => {
       const data = await response.json()
       setAdvice(data.slip)
     } catch (error) {
-      console.log("error: ", error)
+      setError({ error: true, message: error.message })
     }
+  }
 
+  useEffect(() => {
+    collect()
+    console.log("oop")
+  }, [])
+
+  if(error.error){
+    return <h1>an error has occured: {error.message} </h1>
   }
   return (
     <div>
