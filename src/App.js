@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react'
 const App = () => {
-  const [advice, setAdvice] = useState("")
+  const [cats, setCats] = useState("")
   const [error, setError] = useState({
     error: false,
     message: ""
   })
   const collect = async () => {
     try {
-      const response = await fetch("https://api.adviceslip.com/advice")
-      console.log(response) 
+      const response = await fetch("https://api.thecatapi.com/v1/images/search?limit=10")
       if(response.status !== 200){
         throw new Error("oops")
       }
       const data = await response.json()
-      setAdvice(data.slip)
+      setCats(data)
     } catch (error) {
       setError({ error: true, message: error.message })
     }
@@ -27,9 +26,15 @@ const App = () => {
   if(error.error){
     return <h1>an error has occured: {error.message} </h1>
   }
+  if(!cats){
+    return <h1>loading...</h1>
+  }
   return (
     <div>
-      <h1>advice: {advice.advice}</h1>
+      <h1>cats</h1>
+      {cats.map((cat, index) => {
+        return <img key={index} src={cat.url} />
+      })}
       <button onClick={collect}>fetch</button>
     </div>
   )
